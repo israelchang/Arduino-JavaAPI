@@ -1,27 +1,32 @@
 /**
- * Este código es propiedad de su creador Antony García González y del Equipo Creativo de Panama Hitek.
- * 
- * Está protegido bajo la licencia LGPL v 2.1, cuya copia se puede encontrar en el siguiente enlace:
- * http://www.gnu.org/licenses/lgpl.txt
- * 
- * Para su funcionamiento utiliza el código de la librería RXTX que ha permanecido intacto sin modificación alguna
- * de parte de nuestro equipo creativo.
- * 
- * Esta librería es de código abierto y ha sido diseñada para que los usuarios, desde principiantes hasta expertos
- * puedan contar con las herramientas apropiadas para el desarrollo de sus proyectos, de una forma sencilla y agradable.
- * 
- * Se espera que se en cualquier uso de este código se reconozca su procedencia. Este algoritmo fue diseñado en la
- * República de Panamá por Antony García Gónzález, estudiante de la Universidad de Panamá en la carrera de Licenciatura en Ingeniería
- * Electromecánica, desde el año 2013 hasta el presente. Su diseñador forma parte del Equipo Creativo de Panama Hitek, una
- * organización sin fines de lucro dedicada a la enseñanza del desarrollo de software y hardware a través de su sitio web oficial
- * http://panamahitek.com
- * 
- * Solamente deseamos que se reconozca esta compilación de código como un trabajo hecho por panameños para Panamá y el mundo.
- * 
+ * Este código es propiedad de su creador Antony García González y del Equipo
+ * Creativo de Panama Hitek.
+ *
+ * Está protegido bajo la licencia LGPL v 2.1, cuya copia se puede encontrar en
+ * el siguiente enlace: http://www.gnu.org/licenses/lgpl.txt
+ *
+ * Para su funcionamiento utiliza el código de la librería RXTX que ha
+ * permanecido intacto sin modificación alguna de parte de nuestro equipo
+ * creativo.
+ *
+ * Esta librería es de código abierto y ha sido diseñada para que los usuarios,
+ * desde principiantes hasta expertos puedan contar con las herramientas
+ * apropiadas para el desarrollo de sus proyectos, de una forma sencilla y
+ * agradable.
+ *
+ * Se espera que se en cualquier uso de este código se reconozca su procedencia.
+ * Este algoritmo fue diseñado en la República de Panamá por Antony García
+ * Gónzález, estudiante de la Universidad de Panamá en la carrera de
+ * Licenciatura en Ingeniería Electromecánica, desde el año 2013 hasta el
+ * presente. Su diseñador forma parte del Equipo Creativo de Panama Hitek, una
+ * organización sin fines de lucro dedicada a la enseñanza del desarrollo de
+ * software y hardware a través de su sitio web oficial http://panamahitek.com
+ *
+ * Solamente deseamos que se reconozca esta compilación de código como un
+ * trabajo hecho por panameños para Panamá y el mundo.
+ *
  * Si desea contactarnos escríbanos a antony.garcia.gonzalez@gmail.com
  */
-
-
 package panamahitek.Arduino;
 
 import gnu.io.CommPortIdentifier;
@@ -534,7 +539,7 @@ public class PanamaHitek_Arduino {
     }
 
     /**
-     *
+     *@since v2.6.0
      * Devuelve un valor true cuando se produce un salto de línea en el envío de
      * información desde Arduino hacia la computadora. Se debe tomar en cuenta
      * que la separación entre un mensaje y otro depende del uso de
@@ -546,6 +551,26 @@ public class PanamaHitek_Arduino {
      * de línea en la recepción de datos desde Arduino.
      */
     public boolean isMessageAvailable() {
+        AvailableInUse = true;
+        serialRead();
+        boolean Salida = MessageAvailable;
+        return Salida;
+    }
+    
+       /**
+        * @since v2.0.0
+     *@deprecated Este método ahora se llama isMessageAvailable()
+     * Devuelve un valor true cuando se produce un salto de línea en el envío de
+     * información desde Arduino hacia la computadora. Se debe tomar en cuenta
+     * que la separación entre un mensaje y otro depende del uso de
+     * Serial.println() en Arduino, ya que este método busca los saltos de línea
+     * en los mensajes para luego llevar a cabo la impresión. Si se utiliza
+     * Serial.print() la librería no reconocerá el mensaje que se esté enviando.
+     *
+     * @return Una variable tipo boolean que será TRUE cuando se reciba un salto
+     * de línea en la recepción de datos desde Arduino.
+     */
+    public boolean MessageAvailable() {
         AvailableInUse = true;
         serialRead();
         boolean Salida = MessageAvailable;
@@ -714,6 +739,240 @@ public class PanamaHitek_Arduino {
      */
     public void showMessageDialogs(boolean ON_or_OFF) {
         MessageDialogs = ON_or_OFF;
+    }
+
+    /**
+     * Método para iniciar la conexión con Arduino, solamente para transmisión
+     * de información de la computadora al Arduino por medio del Puerto Serie
+     *
+     * @since v1.0.0
+     * @deprecated Desde la version 2.6.0 no es necesario establecer el TIME_OUT
+     * como parámetro de entrada. Si se desea establecer un TIME_OUT distinto
+     * del establecido por defecto (2000 milisegundos) se debe utilizar el
+     * método setTimeOut(int time).
+     * @param PORT_NAME Nombre del puerto en el que se encuentra conectado el
+     * Arduino
+     * @param TIME_OUT Tiempo máximo que esperará el programa para establecer la
+     * comunicación serial con el dispositivo
+     * @param DATA_RATE Velocidad de transmisión de datos en baudios por segundo
+     * @throws Exception Se pueden dar varias excepciones: - Si se intenta
+     * iniciar la comunicación con Arduino más de una vez - Si no se encuentra
+     * ningún dispositivo conectado al Puerto Serie - Si no se encuentra un
+     * Arduino conectado en el puerto establecido - Si el puerto seleccionado
+     * está siendo usado por alguna otra aplicación
+     *
+     *
+     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
+     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
+     * TIME_OUT, int DATA_RATE, SerialPortEventListener events)
+     */
+    public void ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE) throws Exception {
+        try {
+            PanamaHitek();
+            if (Connection.equals("")) {
+                Connection = "TX";
+            } else {
+                throw new Exception("No se puede iniciar la conexión con Arduino 2 veces. Se ha usado ArduinoTX y Arduino" + Connection + " simultáneamente");
+            }
+
+            CommPortIdentifier portId = null;
+
+            Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+            while (portEnum.hasMoreElements()) {
+                CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+                if (PORT_NAME.equals(currPortId.getName())) {
+                    portId = currPortId;
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == false) {
+                throw new Exception("No se ha encontrado ningún Arduino conectado en el puerto " + PORT_NAME + ". Verifique el puerto en el que está conectado Arduino");
+            }
+
+            if (portId == null) {
+                throw new Exception("No se ha encontrado ningún Arduino conectado a esta PC. Por favor conecte Arduino a la PC mediante USB");
+            }
+
+            serialPort = (SerialPort) portId.open(this.getClass().getName(), TIMEOUT);
+            serialPort.setSerialPortParams(DATA_RATE, BYTESIZE, STOPBITS, PARITY);
+
+            Output = serialPort.getOutputStream();
+
+        } catch (PortInUseException e) {
+            reverseChanges();
+            if (MessageDialogs) {
+                JOptionPane.showMessageDialog(null, "Imposible Conectar. El puerto " + PORT_NAME + " está siendo usado por otra aplicación");
+            }
+            throw new Exception("Imposible Conectar. El puerto " + PORT_NAME + " está siendo usado por otra aplicación");
+        } catch (Exception ex) {
+            reverseChanges();
+            if (MessageDialogs) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    /**
+     * Método para iniciar la conexión con Arduino, solamente para recepción de
+     * información de en la computadora desde el Arduino por medio del Puerto
+     * Serie
+     *
+     * @since v1.0.0
+     * @deprecated Desde la version 2.6.0 no es necesario establecer el TIME_OUT
+     * como parámetro de entrada. Si se desea establecer un TIME_OUT distinto
+     * del establecido por defecto (2000 milisegundos) se debe utilizar el
+     * método setTimeOut(int time).
+     * @param PORT_NAME Nombre del puerto en el que se encuentra conectado el
+     * Arduino
+     * @param TIME_OUT Tiempo máximo que esperará el programa para establecer la
+     * comunicación serial con el dispositivo
+     * @param DATA_RATE Velocidad de transmisión de datos en baudios por segundo
+     * @param events Instancia de la clase SerialPortEventListener para detectar
+     * cuando sea que se recibe información en el Puerto Serie
+     * @throws Exception Se pueden dar varias excepciones: - Si se intenta
+     * iniciar la comunicación con Arduino más de una vez - Si no se encuentra
+     * ningún dispositivo conectado al Puerto Serie - Si no se encuentra un
+     * Arduino conectado en el puerto establecido - Si el puerto seleccionado
+     * está siendo usado por alguna otra aplicación
+     *
+     *
+     * @see ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE),
+     * ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
+     * SerialPortEventListener events)
+     */
+    public void ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE, SerialPortEventListener events) throws Exception {
+
+        try {
+            PanamaHitek();
+            if (Connection.equals("")) {
+                Connection = "RX";
+            } else {
+                throw new Exception("No se puede iniciar la conexión con Arduino 2 veces. Se ha usado ArduinoRX y Arduino" + Connection + " simultáneamente");
+            }
+            CommPortIdentifier portId = null;
+            Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+
+            while (portEnum.hasMoreElements()) {
+                CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+                if (PORT_NAME.equals(currPortId.getName())) {
+                    portId = currPortId;
+                    flag = true;
+                    break;
+                }
+
+            }
+            if (flag == false) {
+                throw new Exception("No se ha encontrado ningún Arduino conectado en el puerto " + PORT_NAME + ". Verifique el puerto en el que está conectado Arduino");
+            }
+            if (portId == null) {
+                throw new Exception("No se ha encontrado ningún Arduino conectado a esta PC. Por favor conecte Arduino a la PC mediante USB");
+            }
+
+            serialPort = (SerialPort) portId.open(this.getClass().getName(), TIMEOUT);
+            serialPort.setSerialPortParams(DATA_RATE, BYTESIZE, STOPBITS, PARITY);
+
+            Input = serialPort.getInputStream();
+
+            serialPort.addEventListener((SerialPortEventListener) events);
+            serialPort.notifyOnDataAvailable(true);
+
+        } catch (PortInUseException e) {
+            reverseChanges();
+            if (MessageDialogs) {
+                JOptionPane.showMessageDialog(null, "Imposible Conectar. El puerto " + PORT_NAME + " está siendo usado por otra aplicación");
+            }
+            throw new Exception("Imposible Conectar. El puerto " + PORT_NAME + " está siendo usado por otra aplicación");
+
+        } catch (Exception ex) {
+            reverseChanges();
+            if (MessageDialogs) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+            throw new Exception(ex.getMessage());
+        }
+
+    }
+
+    /**
+     * Método para iniciar la conexión con Arduino,tanto para enviar como para
+     * recibir información desde el Arduino por medio del Puerto Serie
+     *
+     * @since v1.0.0
+     * @deprecated Desde la version 2.6.0 no es necesario establecer el TIME_OUT
+     * como parámetro de entrada. Si se desea establecer un TIME_OUT distinto
+     * del establecido por defecto (2000 milisegundos) se debe utilizar el
+     * método setTimeOut(int time).
+     * @param PORT_NAME Nombre del puerto en el que se encuentra conectado el
+     * Arduino
+     * @param TIME_OUT Tiempo máximo que esperará el programa para establecer la
+     * comunicación serial con el dispositivo
+     * @param DATA_RATE Velocidad de transmisión de datos en baudios por segundo
+     * @param events Instancia de la clase SerialPortEventListener para detectar
+     * cuando sea que se recibe información en el Puerto Serie
+     * @throws Exception Se pueden dar varias excepciones: - Si se intenta
+     * iniciar la comunicación con Arduino más de una vez - Si no se encuentra
+     * ningún dispositivo conectado al Puerto Serie - Si no se encuentra un
+     * Arduino conectado en el puerto establecido - Si el puerto seleccionado
+     * está siendo usado por alguna otra aplicación
+     *
+     *
+     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
+     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
+     * TIME_OUT, int DATA_RATE, SerialPortEventListener evento)
+     *
+     */
+    public void ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE, SerialPortEventListener events) throws Exception {
+
+        try {
+            PanamaHitek();
+            if (Connection.equals("")) {
+                Connection = "RXTX";
+            } else {
+                throw new Exception("No se puede iniciar la conexión con Arduino 2 veces. Se ha usado ArduinoRXTX y Arduino" + Connection + " simultáneamente");
+            }
+            CommPortIdentifier portId = null;
+            Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+
+            while (portEnum.hasMoreElements()) {
+                CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+                if (PORT_NAME.equals(currPortId.getName())) {
+                    portId = currPortId;
+                    flag = true;
+                    break;
+                }
+
+            }
+            if (flag == false) {
+                throw new Exception("No se ha encontrado ningún Arduino conectado en el puerto " + PORT_NAME + ". Verifique el puerto en el que está conectado Arduino");
+            }
+
+            if (portId == null) {
+                throw new Exception("No se ha encontrado ningún Arduino conectado a esta PC. Por favor conecte Arduino a la PC mediante USB");
+            }
+
+            serialPort = (SerialPort) portId.open(this.getClass().getName(), TIMEOUT);
+            serialPort.setSerialPortParams(DATA_RATE, BYTESIZE, STOPBITS, PARITY);
+
+            Input = serialPort.getInputStream();
+            Output = serialPort.getOutputStream();
+            serialPort.addEventListener((SerialPortEventListener) events);
+            serialPort.notifyOnDataAvailable(true);
+        } catch (PortInUseException e) {
+            reverseChanges();
+            if (MessageDialogs) {
+                JOptionPane.showMessageDialog(null, "Imposible Conectar. El puerto " + PORT_NAME + " está siendo usado por otra aplicación");
+            }
+            throw new Exception("Imposible Conectar. El puerto " + PORT_NAME + " está siendo usado por otra aplicación");
+
+        } catch (Exception ex) {
+            reverseChanges();
+            if (MessageDialogs) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+            throw new Exception(ex.getMessage());
+        }
     }
 
 }
