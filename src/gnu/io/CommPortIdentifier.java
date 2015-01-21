@@ -107,15 +107,26 @@ public class CommPortIdentifier extends Object /* extends Vector? */ {
             System.err.println(e + " thrown while loading " + "gnu.io.RXTXCommDriver");
         }
 
-        String OS;
-
-        OS = System.getProperty("os.name");
+        String OS=System.getProperty("os.name");
         if (OS.toLowerCase().indexOf("linux") == -1) {
             if (debug) {
                 System.out.println("Have not implemented native_psmisc_report_owner(PortName)); in CommPortIdentifier");
             }
         }
-        System.load("rxtxSerial");
+
+        /*by Panama Hitek Creative Team
+         Lo que se plantea es que a veces, a pesar de que se está ejecutando el código 
+         en un sistema operativo de 64 bits, la librería llama a las librerías de 32 bits.
+        
+         Se planea colocar las librerías en una rita distinta de JAVA_HOME
+         */
+        if (OS.contains("Windows")) {
+            System.load(new Drivers().getPath());
+        } else {
+
+            //Si no eres usuario de Windows te invito a estandarizar esta librería en UNIX
+            System.loadLibrary("rxtxSerial");
+        }
     }
 
     CommPortIdentifier(String pn, CommPort cp, int pt, CommDriver driver) {

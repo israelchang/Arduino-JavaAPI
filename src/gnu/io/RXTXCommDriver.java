@@ -79,7 +79,13 @@ public class RXTXCommDriver implements CommDriver {
         if (debug) {
             System.out.println("RXTXCommDriver {}");
         }
-        System.loadLibrary("rxtxSerial");
+        String OS = System.getProperty("os.name");
+        if (OS.contains("Windows")) {
+            System.load(new Drivers().getPath());
+        } else {
+            //Si no eres usuario de Windows te invito a estandarizar esta librería en UNIX
+            System.loadLibrary("rxtxSerial");
+        }
 
         /*
          Perform a crude check to make sure people don't mix
@@ -807,7 +813,7 @@ public class RXTXCommDriver implements CommDriver {
                     } else {
                         return new RXTXPort(deviceDirectory + PortName);
                     }
-               
+
                 default:
                     if (debug) {
                         System.out.println("unknown PortType  " + PortType + " passed to RXTXCommDriver.getCommPort()");

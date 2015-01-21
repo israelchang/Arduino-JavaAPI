@@ -33,6 +33,7 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEventListener;
+import gnu.io.Drivers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -68,11 +69,52 @@ public class PanamaHitek_Arduino {
     private static int TIMEOUT = 2000;
 
     /**
+     * La rutina que se ejecuta al crear la instancia de la librería
+     * PanamaHitek_Arduino permite verificar si se encuentran los drivers
+     * rxtxSerial.dll en una ruta que se ha establecido por defecto. En
+     * versiones anteriores a la 2.7.0 la librería requería que se pre instalara
+     * manualmente los drivers en la ruta de JAVA_HOME para que funcionara la
+     * comunicación serial. Esto traía problemas y confusión entre algunos
+     * usuarios, además de que a veces al crear JAR comprimidos se producían
+     * errores en la ejecución del código. Ahora la librería PanamaHitek_Arduino
+     * ha ubicado los drivers en otro directorio desde donde son cargados. Si
+     * los archivos no se han colocado en dicho directorio, la propia librería
+     * crea una estructura en una ruta común (Disco C en Windows. La ruta
+     * completa es C:/JavaRXTX) y dentro coloca los drivers necesarios para la
+     * ejecución del código, lo cual para mi concepto hace mucho más cómodo el
+     * uso de esta librería.
+     *
+     * Actualmente este feature sólo está disponible en Windows, por lo que
+     * necesitamos ayuda de usuarios de Linux para expandir estas capacidades
+     * hacia otras plataformas.
+     *
+     */
+    public PanamaHitek_Arduino() {
+        PanamaHitek();
+        if (System.getProperty("os.name").contains("Windows")) {
+            System.out.print("Verificando archivos DLL... ");
+            if (new Drivers().checkDrivers()) {
+                System.out.println("OK");
+            } else {
+                System.out.println("Drivers no encontrados");
+                new Drivers().buildDriverStructure();
+                System.out.println("ATENCIÓN: La librería PanamaHitek_Arduino necesita para su funcionamiento"
+                        + " la instalación de los drivers serialRXTX.dll\nen la ruta de JAVA_HOME. Estos son requisitos"
+                        + " preestablecidos por la librería RXTX para comunicación serial.\nEste código ha sido optimizado"
+                        + " para que cuando no se encuentren disponibles los drivers en determinado equipo se creen\ndichos ficheros,"
+                        + " tanto los de 32 bits como los de 64 bits en la ruta C:/JavaRXTX. Dichos ficheros no se deben borrar ya\nque"
+                        + " forman parte fundamental del funcionamiento de esta librería.");
+            }
+        }
+
+    }
+
+    /**
      * @since v1.2.0 Este metodo simplemente imprime en la consola la
      * información sobre la librería
      */
     private void PanamaHitek() {
-        System.out.println("PanamaHitek_Arduino Library, version 2.6.0");
+        System.out.println("PanamaHitek_Arduino Library, version 2.7.0");
         System.out.println("===============================");
         System.out.println("Library created by Antony Garcia Gonzalez");
         System.out.println("Student of Panama's Tecnological University and the creator of panamahitek.com ");
@@ -190,7 +232,7 @@ public class PanamaHitek_Arduino {
      */
     public void arduinoTX(String PORT_NAME, int DATA_RATE) throws Exception {
         try {
-            PanamaHitek();
+
             if (Connection.equals("")) {
                 Connection = "TX";
             } else {
@@ -262,7 +304,7 @@ public class PanamaHitek_Arduino {
     public void arduinoRX(String PORT_NAME, int DATA_RATE, SerialPortEventListener events) throws Exception {
 
         try {
-            PanamaHitek();
+
             if (Connection.equals("")) {
                 Connection = "RX";
             } else {
@@ -338,7 +380,7 @@ public class PanamaHitek_Arduino {
     public void arduinoRXTX(String PORT_NAME, int DATA_RATE, SerialPortEventListener events) throws Exception {
 
         try {
-            PanamaHitek();
+
             if (Connection.equals("")) {
                 Connection = "RXTX";
             } else {
@@ -539,13 +581,13 @@ public class PanamaHitek_Arduino {
     }
 
     /**
-     *@since v2.6.0
-     * Devuelve un valor true cuando se produce un salto de línea en el envío de
-     * información desde Arduino hacia la computadora. Se debe tomar en cuenta
-     * que la separación entre un mensaje y otro depende del uso de
-     * Serial.println() en Arduino, ya que este método busca los saltos de línea
-     * en los mensajes para luego llevar a cabo la impresión. Si se utiliza
-     * Serial.print() la librería no reconocerá el mensaje que se esté enviando.
+     * @since v2.6.0 Devuelve un valor true cuando se produce un salto de línea
+     * en el envío de información desde Arduino hacia la computadora. Se debe
+     * tomar en cuenta que la separación entre un mensaje y otro depende del uso
+     * de Serial.println() en Arduino, ya que este método busca los saltos de
+     * línea en los mensajes para luego llevar a cabo la impresión. Si se
+     * utiliza Serial.print() la librería no reconocerá el mensaje que se esté
+     * enviando.
      *
      * @return Una variable tipo boolean que será TRUE cuando se reciba un salto
      * de línea en la recepción de datos desde Arduino.
@@ -556,16 +598,16 @@ public class PanamaHitek_Arduino {
         boolean Salida = MessageAvailable;
         return Salida;
     }
-    
-       /**
-        * @since v2.0.0
-     *@deprecated Este método ahora se llama isMessageAvailable()
-     * Devuelve un valor true cuando se produce un salto de línea en el envío de
-     * información desde Arduino hacia la computadora. Se debe tomar en cuenta
-     * que la separación entre un mensaje y otro depende del uso de
-     * Serial.println() en Arduino, ya que este método busca los saltos de línea
-     * en los mensajes para luego llevar a cabo la impresión. Si se utiliza
-     * Serial.print() la librería no reconocerá el mensaje que se esté enviando.
+
+    /**
+     * @since v2.0.0
+     * @deprecated Este método ahora se llama isMessageAvailable() Devuelve un
+     * valor true cuando se produce un salto de línea en el envío de información
+     * desde Arduino hacia la computadora. Se debe tomar en cuenta que la
+     * separación entre un mensaje y otro depende del uso de Serial.println() en
+     * Arduino, ya que este método busca los saltos de línea en los mensajes
+     * para luego llevar a cabo la impresión. Si se utiliza Serial.print() la
+     * librería no reconocerá el mensaje que se esté enviando.
      *
      * @return Una variable tipo boolean que será TRUE cuando se reciba un salto
      * de línea en la recepción de datos desde Arduino.
@@ -768,7 +810,7 @@ public class PanamaHitek_Arduino {
      */
     public void ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE) throws Exception {
         try {
-            PanamaHitek();
+
             if (Connection.equals("")) {
                 Connection = "TX";
             } else {
@@ -845,7 +887,7 @@ public class PanamaHitek_Arduino {
     public void ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE, SerialPortEventListener events) throws Exception {
 
         try {
-            PanamaHitek();
+
             if (Connection.equals("")) {
                 Connection = "RX";
             } else {
@@ -926,7 +968,7 @@ public class PanamaHitek_Arduino {
     public void ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE, SerialPortEventListener events) throws Exception {
 
         try {
-            PanamaHitek();
+
             if (Connection.equals("")) {
                 Connection = "RXTX";
             } else {
