@@ -27,7 +27,7 @@
  *
  * Si desea contactarnos escríbanos a antony.garcia.gonzalez@gmail.com
  */
-package panamahitek.Arduino;
+package panamahitek;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;
@@ -110,8 +110,8 @@ public class PanamaHitek_Arduino {
     }
 
     /**
-     * @since v1.2.0 Este metodo simplemente imprime en la consola la
-     * información sobre la librería
+     * Este metodo simplemente imprime en la consola la información sobre la librería
+     * @since v1.2.0 
      */
     private void PanamaHitek() {
         System.out.println("PanamaHitek_Arduino Library, version 2.7.0");
@@ -225,10 +225,6 @@ public class PanamaHitek_Arduino {
      * Arduino conectado en el puerto establecido - Si el puerto seleccionado
      * está siendo usado por alguna otra aplicación
      *
-     *
-     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
-     * TIME_OUT, int DATA_RATE, SerialPortEventListener events)
      */
     public void arduinoTX(String PORT_NAME, int DATA_RATE) throws Exception {
         try {
@@ -295,11 +291,6 @@ public class PanamaHitek_Arduino {
      * ningún dispositivo conectado al Puerto Serie - Si no se encuentra un
      * Arduino conectado en el puerto establecido - Si el puerto seleccionado
      * está siendo usado por alguna otra aplicación
-     *
-     *
-     * @see ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE),
-     * ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events)
      */
     public void arduinoRX(String PORT_NAME, int DATA_RATE, SerialPortEventListener events) throws Exception {
 
@@ -372,9 +363,6 @@ public class PanamaHitek_Arduino {
      * está siendo usado por alguna otra aplicación
      *
      *
-     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
-     * TIME_OUT, int DATA_RATE, SerialPortEventListener evento)
      *
      */
     public void arduinoRXTX(String PORT_NAME, int DATA_RATE, SerialPortEventListener events) throws Exception {
@@ -430,16 +418,15 @@ public class PanamaHitek_Arduino {
     }
 
     /**
-     * Método para el envío de información desde Java hacia Arduino. *
+     * Método para el envío de información desde Java hacia Arduino. 
+     * 
+     * @since v1.0.0
      *
      * @param data Una cadena de caracteres con el String que se desea enviar.
      * @throws Exception Se puede producir un error si no se ha iniciado la
      * conexión con Aruino o si se intenta enviar datos cuando se ha iniciado la
      * conexión por medio de ArduinoRX().
      *
-     * @see ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE),
-     * ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener evento);
      */
     public void sendData(String data) throws Exception {
         try {
@@ -478,9 +465,6 @@ public class PanamaHitek_Arduino {
      * conexión con Arduino o si dicha conexión se ha iniciado a través del
      * método ArduinoRX().
      *
-     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
-     * TIME_OUT, int DATA_RATE, SerialPortEventListener evento)
      *
      * @since v2.6.0
      */
@@ -518,9 +502,6 @@ public class PanamaHitek_Arduino {
      * conexión con Arduino o si la misma ha sido iniciada utilizando el método
      * ArduinoTX().
      *
-     * @see ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener evento), ArduinoRX(String PORT_NAME, int
-     * TIME_OUT, int DATA_RATE, SerialPortEventListener events)
      *
      * @since v1.0.0
      */
@@ -581,7 +562,7 @@ public class PanamaHitek_Arduino {
     }
 
     /**
-     * @since v2.6.0 Devuelve un valor true cuando se produce un salto de línea
+     * Devuelve un valor true cuando se produce un salto de línea
      * en el envío de información desde Arduino hacia la computadora. Se debe
      * tomar en cuenta que la separación entre un mensaje y otro depende del uso
      * de Serial.println() en Arduino, ya que este método busca los saltos de
@@ -589,6 +570,8 @@ public class PanamaHitek_Arduino {
      * utiliza Serial.print() la librería no reconocerá el mensaje que se esté
      * enviando.
      *
+     * @since v2.6.0
+     * 
      * @return Una variable tipo boolean que será TRUE cuando se reciba un salto
      * de línea en la recepción de datos desde Arduino.
      */
@@ -643,14 +626,15 @@ public class PanamaHitek_Arduino {
 
     /**
      * @deprecated Este método ha sido renombrado. Desde la versión 2.6.0 de la
-     * librería PanamaHitek_Arduino se utiliza getportsAvailable().
-     *
+     * librería PanamaHitek_Arduino se utiliza getportsAvailable().     
      * Devuelve la cantidad de puertos activos. Esto dependerá de cuantos
      * dispositivos dispositivos estén conectado a a la computadora a través del
      * Puerto Serie
      *
      * @return Una número entero positivo mayor o igual a cero con la cantidad
      * de puertos que se encontraron disponibles.
+     * 
+     * 
      */
     public int SerialPortsAvailable() {
         int Output = 0;
@@ -665,11 +649,13 @@ public class PanamaHitek_Arduino {
     }
 
     /**
-     * @since v2.6.0
+     * 
      *
      * Devuelve la cantidad de puertos activos. Esto dependerá de cuantos
      * dispositivos dispositivos estén conectado a a la computadora a través del
      * Puerto Serie
+     * 
+     * @since v2.6.0
      *
      * @return Una número entero positivo mayor o igual a cero con la cantidad
      * de puertos que se encontraron disponibles.
@@ -804,9 +790,6 @@ public class PanamaHitek_Arduino {
      * está siendo usado por alguna otra aplicación
      *
      *
-     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
-     * TIME_OUT, int DATA_RATE, SerialPortEventListener events)
      */
     public void ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE) throws Exception {
         try {
@@ -880,9 +863,6 @@ public class PanamaHitek_Arduino {
      * está siendo usado por alguna otra aplicación
      *
      *
-     * @see ArduinoTX(String PORT_NAME, int TIME_OUT, int DATA_RATE),
-     * ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events)
      */
     public void ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE, SerialPortEventListener events) throws Exception {
 
@@ -960,9 +940,6 @@ public class PanamaHitek_Arduino {
      * está siendo usado por alguna otra aplicación
      *
      *
-     * @see ArduinoRX(String PORT_NAME, int TIME_OUT, int DATA_RATE,
-     * SerialPortEventListener events), ArduinoRXTX(String PORT_NAME, int
-     * TIME_OUT, int DATA_RATE, SerialPortEventListener evento)
      *
      */
     public void ArduinoRXTX(String PORT_NAME, int TIME_OUT, int DATA_RATE, SerialPortEventListener events) throws Exception {

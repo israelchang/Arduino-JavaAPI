@@ -27,9 +27,8 @@
  *
  * Si desea contactarnos escríbanos a antony.garcia.gonzalez@gmail.com
  */
-package panamahitek.Arduino;
+package panamahitek;
 
-import Arduino.Arduino;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +36,6 @@ import java.util.List;
  * @author Antony García González, de Proyecto Panama Hitek. Visita
  * http://panamahitek.com
  */
-
-
-
-
 public class PanamaHitek_multiMessage {
 
     //Variables 
@@ -49,11 +44,12 @@ public class PanamaHitek_multiMessage {
     private List<String> buffer;
     private boolean ReceptionCompleted = false;
     private PanamaHitek_Arduino ino;
-Arduino Arduino = new Arduino();
+    PanamaHitek_Arduino Arduino = new PanamaHitek_Arduino();
     /*Esta clase ha sido diseñada para hacer lectura de múltiples datos, por ejemplo
      de sensores conectados a Arduino sin tener que llevar a cabo complicadas secuencias lógicas
      para discernir entre una lectura y otra.
      */
+
     public PanamaHitek_multiMessage(int Messages, PanamaHitek_Arduino InputObject) {
         ino = InputObject;
         Mensajes = Messages;

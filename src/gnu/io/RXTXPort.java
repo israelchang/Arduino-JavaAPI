@@ -112,7 +112,7 @@ final public class RXTXPort extends SerialPort {
      * Open the named port
      *
      * @param name the name of the device to open
-     * @throws PortInUseException
+     * @throws PortInUseException Se lanza esta excepción cuando el puerto se encuentra en uso
      * @see gnu.io.SerialPort
      */
     public RXTXPort(String name) throws PortInUseException {
@@ -376,7 +376,8 @@ final public class RXTXPort extends SerialPort {
      * Receive framing control
      *
      * @param f framming
-     * @throws UnsupportedCommOperationException
+     * @throws UnsupportedCommOperationException 
+     * For not supported port operations
      */
     public void enableReceiveFraming(int f)
             throws UnsupportedCommOperationException {
@@ -451,7 +452,7 @@ final public class RXTXPort extends SerialPort {
     }
 
     /**
-     * @param time
+     * @param time Inpur paratemer
      */
     public void enableReceiveTimeout(int time) {
         if (debug) {
@@ -1142,6 +1143,7 @@ final public class RXTXPort extends SerialPort {
 
     /**
      * @param enable
+     * TRUE for enable. FALSE por disable
      */
     public void notifyOnFramingError(boolean enable) {
         if (debug) {
@@ -1788,13 +1790,7 @@ final public class RXTXPort extends SerialPort {
         }
     }
 
-    /**
-     * A dummy method added so RXTX compiles on Kaffee
-     *
-     * @deprecated deprecated but used in Kaffe
-     */
-    public void setRcvFifoTrigger(int trigger) {
-    }
+  
 
     ;  
 
@@ -1899,7 +1895,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port the name of the port thats been preopened
      * @return BaudRate on success
-     * @throws UnsupportedCommOperationException; This will not behave as
+     * @throws UnsupportedCommOperationException This will not behave as
      * expected with custom speeds
      *
      */
@@ -1918,7 +1914,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port the name of the port thats been preopened
      * @return DataBits on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static int staticGetDataBits(String port)
@@ -1936,7 +1932,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port the name of the port thats been preopened
      * @return Parity on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static int staticGetParity(String port)
@@ -1954,7 +1950,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port the name of the port thats been preopened
      * @return StopBits on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static int staticGetStopBits(String port)
@@ -1978,7 +1974,7 @@ final public class RXTXPort extends SerialPort {
      * @param s stopbits
      * @param p parity
      *
-     * @throws UnsupportedCommOperationException
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      * @see gnu.io.UnsupportedCommOperationException
      */
     public static void staticSetSerialPortParams(String f, int b, int d,
@@ -2001,7 +1997,7 @@ final public class RXTXPort extends SerialPort {
      * second time later on.
      *
      * @return true on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static boolean staticSetDSR(String port, boolean flag)
@@ -2022,7 +2018,7 @@ final public class RXTXPort extends SerialPort {
      * second time later on.
      *
      * @return true on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static boolean staticSetDTR(String port, boolean flag)
@@ -2043,7 +2039,7 @@ final public class RXTXPort extends SerialPort {
      * second time later on.
      *
      * @return none
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static boolean staticSetRTS(String port, boolean flag)
@@ -2063,7 +2059,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port
      * @return true if asserted
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
     public static boolean staticIsRTS(String port)
@@ -2082,7 +2078,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port
      * @return true if asserted
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
 
@@ -2102,7 +2098,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port
      * @return true if asserted
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
 
@@ -2122,7 +2118,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port
      * @return true if asserted
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
 
@@ -2142,7 +2138,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port
      * @return true if asserted
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
 
@@ -2162,7 +2158,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param port
      * @return true if asserted
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      */
 
@@ -2179,7 +2175,7 @@ final public class RXTXPort extends SerialPort {
      * supported on all operating systems.
      *
      * @return int the Parity Error Character
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      * Anyone know how to do this in Unix?
      */
@@ -2203,7 +2199,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param b Parity Error Character
      * @return boolean true on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      * Anyone know how to do this in Unix?
      */
@@ -2220,7 +2216,7 @@ final public class RXTXPort extends SerialPort {
      * supported on all operating systems.
      *
      * @return int the End of Input Character
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      *
      * Anyone know how to do this in Unix?
      */
@@ -2244,7 +2240,7 @@ final public class RXTXPort extends SerialPort {
      *
      * @param b End Of Input Character
      * @return boolean true on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      */
     public boolean setEndOfInputChar(byte b)
             throws UnsupportedCommOperationException {
@@ -2262,7 +2258,7 @@ final public class RXTXPort extends SerialPort {
      * "8250", "16450", "16550", "16550A", "16650", "16550V2" or "16750".
      * @param test boolean flag to determin if the UART should be tested.
      * @return boolean true on success
-     * @throws UnsupportedCommOperationException;
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
      */
     public boolean setUARTType(String type, boolean test)
             throws UnsupportedCommOperationException {
@@ -2278,8 +2274,8 @@ final public class RXTXPort extends SerialPort {
      *
      * @return type String representation of the UART type which mayb be "none",
      * "8250", "16450", "16550", "16550A", "16650", "16550V2" or "16750".
-     * @throws UnsupportedCommOperationException;
-     */
+     * @throws UnsupportedCommOperationException Triggers if a problem is detected
+       */
     public String getUARTType() throws UnsupportedCommOperationException {
         return nativeGetUartType();
     }
@@ -2291,8 +2287,11 @@ final public class RXTXPort extends SerialPort {
      * @param BaudBase The clock frequency divided by 16. Default BaudBase is
      * 115200.
      * @return true on success
-     * @throws UnsupportedCommOperationException, IOException
+     * @throws UnsupportedCommOperationException Triggers if a problem is detected
+     * @throws java.io.IOException Triggers if a problem is detected
+     * 
      */
+
     public boolean setBaudBase(int BaudBase)
             throws UnsupportedCommOperationException,
             IOException {
@@ -2306,7 +2305,8 @@ final public class RXTXPort extends SerialPort {
      * Extension to CommAPI
      *
      * @return BaudBase
-     * @throws UnsupportedCommOperationException, IOException
+     * @throws UnsupportedCommOperationException Triggers if port operation is not allowed
+     * @throws java.io.IOException Triggers if a problem is detected
      */
     public int getBaudBase() throws UnsupportedCommOperationException,
             IOException {
@@ -2321,7 +2321,8 @@ final public class RXTXPort extends SerialPort {
      * using.
      *
      * @param Divisor
-     * @throws UnsupportedCommOperationException, IOException
+     * @throws UnsupportedCommOperationException Triggers if a problem is detected
+     * @throws java.io.IOException Triggers if a problem is detected
      */
     public boolean setDivisor(int Divisor)
             throws UnsupportedCommOperationException, IOException {
@@ -2335,7 +2336,10 @@ final public class RXTXPort extends SerialPort {
      * Extension to CommAPI
      *
      * @return Divisor;
-     * @throws UnsupportedCommOperationException, IOException
+     * @throws UnsupportedCommOperationException Triggers if a problem is detected
+     * @throws java.io.IOException Triggers if a problem is detected
+     * 
+     * 
      */
     public int getDivisor() throws UnsupportedCommOperationException,
             IOException {
@@ -2349,6 +2353,7 @@ final public class RXTXPort extends SerialPort {
      * Extension to CommAPI returns boolean true on success
      *
      * @throws UnsupportedCommOperationException
+     * Triggers if port operation is not allowed
      */
     public boolean setLowLatency() throws UnsupportedCommOperationException {
         if (debug) {
@@ -2361,6 +2366,7 @@ final public class RXTXPort extends SerialPort {
      * Extension to CommAPI returns boolean true on success
      *
      * @throws UnsupportedCommOperationException
+     * Triggers if port operation is not allowed
      */
     public boolean getLowLatency() throws UnsupportedCommOperationException {
         if (debug) {
@@ -2373,6 +2379,7 @@ final public class RXTXPort extends SerialPort {
      * Extension to CommAPI returns boolean true on success
      *
      * @throws UnsupportedCommOperationException
+     * Triggers if port operation is not allowed
      */
     public boolean setCallOutHangup(boolean NoHup)
             throws UnsupportedCommOperationException {
@@ -2386,6 +2393,7 @@ final public class RXTXPort extends SerialPort {
      * Extension to CommAPI returns boolean true on success
      *
      * @throws UnsupportedCommOperationException
+     * Triggers if port operation is not allowed
      */
     public boolean getCallOutHangup()
             throws UnsupportedCommOperationException {
@@ -2398,8 +2406,11 @@ final public class RXTXPort extends SerialPort {
     /**
      * Extension to CommAPI returns boolean true on success
      *
-     * @throws UnsupportedCommOperationException
+     * @throws UnsupportedCommOperationException 
+     * Triggers if port operation is not allowed
+     * @return if Port is clear
      */
+    
     public boolean clearCommInput()
             throws UnsupportedCommOperationException {
         if (debug) {
